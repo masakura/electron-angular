@@ -145,7 +145,8 @@ module.exports = function (grunt) {
           src: [
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
-            '!<%= yeoman.dist %>/.git{,*/}*'
+            '!<%= yeoman.dist %>/.git{,*/}*',
+            'dist'
           ]
         }]
       },
@@ -414,6 +415,23 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    electron: {
+      options: {
+        name: 'angular3App',
+        dir: 'dist-webapp',
+        out: 'dist',
+        version: '0.33.3',
+        asar: true,
+        ignore: 'dist'
+      },
+      linux: {
+        options: {
+          platform: 'all',
+          arch: 'all'
+        }
+      }
     }
   });
 
@@ -466,7 +484,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'electron'
   ]);
 
   grunt.registerTask('default', [
