@@ -376,8 +376,8 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
-          cwd: 'app',
-          src: '*.js',
+          cwd: 'electron',
+          src: '**/*.js',
           dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
