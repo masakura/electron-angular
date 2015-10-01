@@ -77,7 +77,6 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          open: true,
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
@@ -418,6 +417,9 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('electron-runner', function () {
+    require('child_process').exec('electron electron/index-livereload.js');
+  });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -430,6 +432,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
+      'electron-runner',
       'watch'
     ]);
   });
