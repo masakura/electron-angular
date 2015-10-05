@@ -58,6 +58,13 @@
       </div>
     </div>
 
+    <script>
+     // Remove window.module
+     // Cannot load jquery
+     var module_ = window.module;
+     delete window.module;
+    </script>
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -71,6 +78,11 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+
+    <script>
+     // Restore window.module
+     window.module = module_;
+    </script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
