@@ -15,7 +15,11 @@ module.exports = function (optUrl) {
   });
 
   app.on('ready', function () {
-    var main = new BrowserWindow({width: 800, height: 600});
+    var main = new BrowserWindow({
+      width: 800,
+      height: 600,
+      'node-integration': false
+    });
     main.loadUrl(url);
 
     main.on('closed', function () {
