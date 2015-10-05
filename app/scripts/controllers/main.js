@@ -8,56 +8,39 @@
  * Controller of the angular3App
  */
 angular.module('angular3App')
-  .controller('MainCtrl', function ($timeout) {
+  .controller('MainCtrl', function ($scope) {
     var vm = this;
 
-    var Inspection = function (title) {
-      this.title = title;
-      this.status = 'pending';
-      this.resultStatus = '';
-    };
+    console.log(process.cwd());
+    var remote = require('remote');
+    var InspectionManager = remote.require('./lib/inspectionManager.js');
+    var inspectionManager = new InspectionManager();
 
-    Inspection.prototype.run = function () {
-      this.status = 'progress';
-      this.resultStatus = '';
-    };
+    var inspections = vm.inspections = inspectionManager.inspections;
+    inspections.forEach(function (inspection) {
+      inspection.on('change', function () {
+        if ($scope.$root.$$phase !== '$apply' && $scope.$root.$$phase !== '$digest') {
+          $scope.$apply();
+        }
+      });
+    });
 
-    Inspection.prototype.finish = function (resultStatus, result) {
-      this.status = 'finish';
-      this.resultStatus = resultStatus;
-      this.result = result;
-    };
-
-    var inspections = vm.inspections = [
-      new Inspection('Node.js のバージョンは?'),
-      new Inspection('npm のバージョンは?')
-    ];
 
     vm.inspect = function () {
-      inspections[0].run();
-
-      $timeout(function () {
-        inspections[0].finish('success', 'v4.1.1');
-
-        inspections[1].run();
-
-        $timeout(function () {
-          inspections[1].finish('error', 'Unknown');
-        }, 1500);
-      }, 1000);
-    }
+      inspectionManager.run();
+    };
     vm.getStatusClass = function (inspection) {
       return {
         'list-group-item-info': inspection.status === 'progress',
         'list-group-item-success': inspection.resultStatus === 'success',
         'list-group-item-danger': inspection.resultStatus === 'error',
-        'list-group-item-warning': inspection.resultStatus === 'warning'
+        'list-group-item-warning': inspection.resultStatus === 'warning',
+        'inspection-item-progress': inspection.status === 'progress'
       };
     };
     vm.getGlphicon = function (inspection) {
       return {
-        'glyphicon-stop': inspection.status === 'pending',
-        'glyphicon-refresh': inspection.status === 'progress',
+        'glyphicon-refresh': inspection.status === 'progress' || inspection.status === 'pending',
         'glyphicon-ok-sign': inspection.resultStatus === 'success',
         'glyphicon-exclamation-sign': inspection.resultStatus === 'error',
         'glyphicon-info-sign': inspection.resultStatus === 'warning'

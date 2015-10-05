@@ -2,7 +2,7 @@
   <button type="button" class="btn btn-primary" ng-click="vm.inspect()">検査開始</button>
 
   <ul class="list-group">
-    <li class="list-group-item" ng-class="vm.getStatusClass(inspection)" ng-repeat="inspection in vm.inspections">
+    <li class="list-group-item inspection-item" ng-class="vm.getStatusClass(inspection)" ng-repeat="inspection in vm.inspections">
       <span class="glyphicon" ng-class="vm.getGlphicon(inspection)" aria-hidden="true"></span>
       {{inspection.title}}
       <span ng-if="inspection.result">({{inspection.result}})</span>
